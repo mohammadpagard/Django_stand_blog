@@ -1,9 +1,9 @@
-from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
 from django.template.defaultfilters import slugify
+from django.utils.html import format_html
 
 
 
@@ -26,7 +26,7 @@ class Post(models.Model):
     slug = models.SlugField(null=True, unique=True, blank=True, verbose_name='لینک')
     category = models.ManyToManyField(Category, related_name='posts', verbose_name='دسته بندی')
     body = models.TextField(verbose_name='محتوا')
-    image = models.ImageField(upload_to='images/posts', verbose_name='عکس')
+    image = models.ImageField(upload_to='images/posts', blank=True, null=True, verbose_name='عکس')
     created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ساخت')
     updated = models.DateTimeField(auto_now=True, verbose_name='آخرین بروزرسانی')
     publish = models.DateTimeField(default=timezone.now, verbose_name='زمان انتشار')
@@ -39,6 +39,15 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'slug': self.slug})
+
+    # show image in admin panel
+    def show_image(self):
+        if self.image:
+            return format_html(
+                f'<img src="{self.image.url}" width="60px" height="60px"'
+            )
+        return format_html('<h3 style="color: brown">تصویر ندارد</h3>')
+
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
