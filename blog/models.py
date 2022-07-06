@@ -26,7 +26,7 @@ class Post(models.Model):
     slug = models.SlugField(null=True, unique=True, blank=True, verbose_name='لینک')
     category = models.ManyToManyField(Category, related_name='posts', verbose_name='دسته بندی')
     body = models.TextField(verbose_name='محتوا')
-    image = models.ImageField(upload_to='images/posts', blank=True, null=True, verbose_name='عکس')
+    image = models.ImageField(verbose_name='عکس', upload_to='images/posts', null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ساخت')
     updated = models.DateTimeField(auto_now=True, verbose_name='آخرین بروزرسانی')
     publish = models.DateTimeField(default=timezone.now, verbose_name='زمان انتشار')
