@@ -9,8 +9,8 @@ from django.utils.html import format_html
 
 class Category(models.Model):
     title = models.CharField(max_length=100, verbose_name='عنوان')
-    slug = models.SlugField(unique=True, blank=True, null=True)
-    created = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(unique=True, blank=True, null=True, verbose_name='لینک')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ساخت')
 
 
     class Meta:
@@ -63,11 +63,11 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
-    body = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name='مقاله')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name='کاربر')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies', verbose_name='پاسخ به')
+    body = models.TextField(verbose_name='عنوان')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ساخت')
 
 
     class Meta:
@@ -81,12 +81,12 @@ class Comment(models.Model):
 
 
 class Message(models.Model):
-    title = models.CharField(max_length=100)
-    text = models.TextField()
-    email = models.EmailField()
-    age = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    date = models.DateTimeField(default=timezone.now())
+    title = models.CharField(max_length=100, verbose_name='عنوان پیام')
+    text = models.TextField(verbose_name='محتوای پیام')
+    email = models.EmailField(verbose_name='ایمیل')
+    age = models.IntegerField(default=0, verbose_name='سن')
+    created_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name='تاریخ ارسال پیام')
+    date = models.DateTimeField(default=timezone.now(), verbose_name='زمان پیام')
 
 
     class Meta:
