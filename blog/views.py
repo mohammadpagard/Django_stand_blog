@@ -1,4 +1,3 @@
-from turtle import title
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Category, Comment, Message
 from django.core.paginator import Paginator
@@ -22,17 +21,24 @@ class PostDetail(my_mixins.CustomLoginRequiredMixin, DetailView):
 
 class PostList(ListView):
     queryset = Post.objects.filter(status=True).order_by('-created',)
+    context_object_name = 'object_list'
     paginate_by = 4
 
 
-def category_detail(request, pk=None):
-    category = get_object_or_404(Category, id=pk)
-    posts = category.posts.all()
+class CategoryList(ListView):
+    paginate_by = 4
+    template_name = 'blog/category_list.html'
 
-    context = {
-        'posts': posts,
-    }
-    return render(request, 'blog/posts_list.html', context)
+    def get_queryset(self):
+        slug = self.kwargs.get('slug')
+        category = get_object_or_404(Category, slug=slug)
+        return category.posts.all()
+
+    def get_context_data(self, **kwargs):
+        slug = self.kwargs.get('slug')
+        context = super().get_context_data(**kwargs)
+        context['category'] = get_object_or_404(Category, slug=slug)
+        return context
 
 
 def search(request):
@@ -49,22 +55,6 @@ def search(request):
     return render(request, 'blog/posts_list.html', context)
 
 
-def contact_us(request):
-    if request.method == 'POST':
-        form = MessageForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home_page:home')
-    else:
-        form = MessageForm()
-
-    context = {
-        'form': form,
-    }
-
-    return render(request, 'blog/contact_us.html', context)
-
-
 class ContactUsView(FormView):
     template_name = "blog/contact_us.html"
     form_class = MessageForm
@@ -76,3 +66,4 @@ class ContactUsView(FormView):
         Message.objects.create(**form_data)
 
         return super().form_valid(form)
+

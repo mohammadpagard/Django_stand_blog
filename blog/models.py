@@ -9,6 +9,7 @@ from django.utils.html import format_html
 
 class Category(models.Model):
     title = models.CharField(max_length=100, verbose_name='عنوان')
+    slug = models.SlugField(unique=True, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
 
 
@@ -18,6 +19,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
 
 
 class Post(models.Model):
