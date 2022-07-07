@@ -39,7 +39,7 @@
             <ul>
 
                 {% for cat in recent_categories %}
-                    <li><a href="{% url 'blog:category_detail' cat.id %}">- {{ cat.title }}</a></li>
+                    <li><a href="{% url 'blog:category_detail' cat.slug %}">- {{ cat.title }}</a></li>
                 {% endfor %}
 
             </ul>
