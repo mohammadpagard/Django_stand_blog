@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Category, Comment, Message
+from .models import Post, Category, Comment, Message, Like
 from django.core.paginator import Paginator
 from .forms import MessageForm
 from django.views.generic import ListView, DetailView, FormView
@@ -16,6 +16,12 @@ class PostDetail(my_mixins.CustomLoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context ['comment'] = Comment.objects.all()
         context['form'] = Comment()
+        # like
+        if self.request.user.likes.filter(post__slug=self.object.slug, user_id=self.request.user.id).exists():
+            context['is_liked'] = True
+        else:
+            context['is_liked'] = False
+
         return context
 
 
@@ -67,3 +73,12 @@ class ContactUsView(FormView):
 
         return super().form_valid(form)
 
+
+def like(request, slug, pk):
+    try:
+        like = Like.objects.get(post__slug=slug, user_id=request.user.id)
+        like.delete()
+    except:
+        Like.objects.create(post_id=pk, user_id=request.user.id)
+
+    return redirect('blog:detail', slug)
