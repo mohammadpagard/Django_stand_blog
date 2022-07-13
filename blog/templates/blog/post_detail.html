@@ -5,172 +5,174 @@
 {% block title %} {{ object.title }} Detail {% endblock %}
 
 {% block content %}
-    <!-- Page Content -->
-    <!-- Banner Starts Here -->
-    <div class="heading-page header-text">
-      <section class="page-heading">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="text-content">
-                <h4>Post Details</h4>
-                <h2>{{ object.title }}</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+		<!-- Page Content -->
+		<!-- Banner Starts Here -->
+		<div class="heading-page header-text">
+			<section class="page-heading">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="text-content">
+								<h4>Post Details</h4>
+								<h2>{{ object.title }}</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
 
 
-    <!-- Post Detail -->
-    <section class="blog-posts grid-system">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8">
-            <div class="all-blog-posts">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="{{ object.image.url }}" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>{{ object.category.all.first }}</span>
-                      <a href="{{ object.get_absolute_url }}"><h4>{{ object.title }}</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">{{ object.author.username }}</a></li>
-                        <li><a href="#">{{ object.created }}</a></li>
-                        <li><a href="#">10 Comments</a></li>
-                      </ul>
-                      <p class="text text-black">{{ object.body|linebreaks }}</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-6">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                          <div class="col-6">
-                            <ul class="post-share">
-                              <li><i class="fa fa-share-alt"></i></li>
-                              <li><a href="#">Facebook</a>,</li>
-                              <li><a href="#"> Twitter</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+		<!-- Post Detail -->
+		<section class="blog-posts grid-system">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="all-blog-posts">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="blog-post">
+										<div class="blog-thumb">
+											<img src="{{ object.image.url }}" alt="">
+										</div>
+										<div class="down-content">
+											<span>{{ object.category.all.first }}</span>
+											<a href="{{ object.get_absolute_url }}"><h4>{{ object.title }}</h4></a>
+											<ul class="post-info">
+												<li><a href="#">{{ object.author.username }}</a></li>
+												<li><a href="#">{{ object.created }}</a></li>
+												<li><a href="#">10 Comments</a></li>
+											</ul>
+											<p class="text text-black">{{ object.body|linebreaks }}</p>
+											<div class="post-options">
+												<div class="row">
+													<div class="col-6">
+														<ul class="post-tags">
+															{% if is_liked %}
+																<li><a href="{% url 'blog:like' post.slug post.id %}"><i style="font-size: 30px" class="fa fa-heart"></i></a>{{ post.likes.all.count }}</li>
+															{% else %}
+																<li><a href="{% url 'blog:like' post.slug post.id %}"><i style="font-size: 30px" class="fa fa-heart-o"></i></a>{{ post.likes.all.count }}</li>
+															{% endif %}
+														</ul>
+													</div>
+													<div class="col-6">
+														<ul class="post-share">
+															<li><i class="fa fa-share-alt"></i></li>
+															<li><a href="#">Facebook</a>,</li>
+															<li><a href="#"> Twitter</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 
-                <!-- COMMENTS -->
-                <div class="col-lg-12">
-                  <div class="sidebar-item comments">
-                    <div class="sidebar-heading">
-                      <h2>4 comments</h2>
-                    </div>
-                    <div class="content">
-                      <ul>
-                        {% for comment in object.comments.all %}
-                            {% if comment.parent == None %}
-                                <li>
-                                  <div class="author-thumb">
-                                      {% if comment.user.profile.image %}
-                                          <img src="{{ comment.user.profile.image.url }}" alt="">
-                                      {% else %}
-                                          <img src="{% static 'images/profile.png' %}" alt="">
-                                      {% endif %}
-                                  </div>
-                                  <div class="right-content">
-                                    <h4>{{ comment.user.username }}
-                                        <span>{{ comment.created }}</span>
-                                    </h4>
-                                    <p>{{ comment.body }}</p>
-                                    <button onclick="set_value({{ comment.id }})" class="btn btn-primary">Reply</button>
-                                  </div>
-                                </li>
-                                <!-- REPLLIEDS -->
-                                {% for reply in comment.replies.all %}
-                                    <li class="replied">
-                                      <div class="author-thumb">
-                                          {% if comment.user.profile.image %}
-                                              <img src="{{ comment.user.profile.image.url }}" alt="">
-                                          {% else %}
-                                              <img src="{% static 'images/profile.png' %}" alt="">
-                                          {% endif %}
-                                      </div>
-                                      <div class="right-content">
-                                        <h4>{{ reply.user.username }}
-                                            <span>{{ reply.created }}</span>
-                                        </h4>
-                                        <p>{{ reply.body }}</p>
-                                      </div>
-                                    </li>
-                                {% endfor %}
-                            {% endif %}
-                        {% endfor %}
+								<!-- COMMENTS -->
+								<div class="col-lg-12">
+									<div class="sidebar-item comments">
+										<div class="sidebar-heading">
+											<h2>4 comments</h2>
+										</div>
+										<div class="content">
+											<ul>
+												{% for comment in object.comments.all %}
+														{% if comment.parent == None %}
+																<li>
+																	<div class="author-thumb">
+																			{% if comment.user.profile.image %}
+																					<img src="{{ comment.user.profile.image.url }}" alt="">
+																			{% else %}
+																					<img src="{% static 'images/profile.png' %}" alt="">
+																			{% endif %}
+																	</div>
+																	<div class="right-content">
+																		<h4>{{ comment.user.username }}
+																				<span>{{ comment.created }}</span>
+																		</h4>
+																		<p>{{ comment.body }}</p>
+																		<button onclick="set_value({{ comment.id }})" class="btn btn-primary">Reply</button>
+																	</div>
+																</li>
+																<!-- REPLLIEDS -->
+																{% for reply in comment.replies.all %}
+																		<li class="replied">
+																			<div class="author-thumb">
+																					{% if comment.user.profile.image %}
+																							<img src="{{ comment.user.profile.image.url }}" alt="">
+																					{% else %}
+																							<img src="{% static 'images/profile.png' %}" alt="">
+																					{% endif %}
+																			</div>
+																			<div class="right-content">
+																				<h4>{{ reply.user.username }}
+																						<span>{{ reply.created }}</span>
+																				</h4>
+																				<p>{{ reply.body }}</p>
+																			</div>
+																		</li>
+																{% endfor %}
+														{% endif %}
+												{% endfor %}
 
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+											</ul>
+										</div>
+									</div>
+								</div>
 
-                {% if request.user.is_authenticated %}
-                    <div class="col-lg-12">
-                  <div class="sidebar-item submit-comment">
-                    <div class="sidebar-heading">
-                      <h2 id="your-comment">Your comment</h2>
-                    </div>
-                    <div class="content">
-                      <form method="post">
-                        {% csrf_token %}
-                        <div class="row">
-                          <input id="parent_id" type="hidden" name="parent_id" value="">
-                          <div class="col-lg-12">
-                            <fieldset>
-                              <textarea name="body" rows="6" id="body" placeholder="Type your comment" required=""></textarea>
-                            </fieldset>
-                          </div>
+								{% if request.user.is_authenticated %}
+										<div class="col-lg-12">
+									<div class="sidebar-item submit-comment">
+										<div class="sidebar-heading">
+											<h2 id="your-comment">Your comment</h2>
+										</div>
+										<div class="content">
+											<form method="post">
+												{% csrf_token %}
+												<div class="row">
+													<input id="parent_id" type="hidden" name="parent_id" value="">
+													<div class="col-lg-12">
+														<fieldset>
+															<textarea name="body" rows="6" id="body" placeholder="Type your comment" required=""></textarea>
+														</fieldset>
+													</div>
 
-                          <div class="col-lg-12">
-                            <fieldset>
-                              <button type="submit" id="form-submit" class="main-button">Submit</button>
-                            </fieldset>
-                          </div>
+													<div class="col-lg-12">
+														<fieldset>
+															<button type="submit" id="form-submit" class="main-button">Submit</button>
+														</fieldset>
+													</div>
 
-                        </div>
+												</div>
 
-                      </form>
-                    </div>
-                  </div>
-                </div>
-                {% else %}
-                    <h4 class="btn btn-primary mt-5">
-                        For sending comment please
-                        <span>
-                            <a class="btn btn-success" href="{% url 'accounts:login' %}">Login</a>
-                        </span>
-                    </h4>
-                {% endif %}
+											</form>
+										</div>
+									</div>
+								</div>
+								{% else %}
+										<h4 class="btn btn-primary mt-5">
+												For sending comment please
+												<span>
+														<a class="btn btn-success" href="{% url 'accounts:login' %}">Login</a>
+												</span>
+										</h4>
+								{% endif %}
 
-              </div>
-            </div>
-          </div>
+							</div>
+						</div>
+					</div>
 
-          {% include "includes/sidebar.html" %}
+					{% include "includes/sidebar.html" %}
 
-        </div>
-      </div>
-    </section>
+				</div>
+			</div>
+		</section>
 
-    <script>
-        function set_value(id){
-            document.getElementById('parent_id').value = id;
-            window.location.href = "#body";
-        }
-    </script>
+		<script>
+				function set_value(id){
+						document.getElementById('parent_id').value = id;
+						window.location.href = "#body";
+				}
+		</script>
 
 {% endblock %}

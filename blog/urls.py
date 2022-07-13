@@ -10,4 +10,5 @@ urlpatterns = [
     path('category/<slug:slug>', views.CategoryList.as_view(), name='category_detail'),
     path('search/', views.search, name='search-posts'),
     path('contact-us/', views.ContactUsView.as_view(), name='contact_us'),
+    path('like/<slug:slug>/<int:pk>', views.like, name='like'),
 ]

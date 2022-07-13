@@ -96,3 +96,16 @@ class Message(models.Model):
     def __str__(self):
         return self.title
 
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes', verbose_name='کاربر')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes', verbose_name='مقاله')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'لایک'
+        verbose_name_plural = 'لایک ها'
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.post.title}"
