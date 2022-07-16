@@ -33,7 +33,12 @@
 								<div class="col-lg-12">
 									<div class="blog-post">
 										<div class="blog-thumb">
-											<img src="{{ object.image.url }}" alt="">
+											<!-- image default/fixed the bog for posts that not have image -->
+											{% if object.image %}
+												<img src="{{ object.image.url }}" alt="">
+											{% else %}
+												<img src="{% static 'images/banner-item-01' %}" alt="">
+											{% endif %}
 										</div>
 										<div class="down-content">
 											<span>{{ object.category.all.first }}</span>

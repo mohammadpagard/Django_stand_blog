@@ -4,18 +4,19 @@ from django.utils import timezone
 from django.urls import reverse
 from django.template.defaultfilters import slugify
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=100, verbose_name='عنوان')
-    slug = models.SlugField(unique=True, blank=True, null=True, verbose_name='لینک')
-    created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ساخت')
+    title = models.CharField(max_length=100, verbose_name=_('عنوان'))
+    slug = models.SlugField(unique=True, blank=True, null=True, verbose_name=_('لینک'))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('تاریخ ساخت'))
 
 
     class Meta:
-        verbose_name = 'دسته بندی'
-        verbose_name_plural = 'دسته بندی ها'
+        verbose_name = _('دسته بندی')
+        verbose_name_plural = _('دسته بندی ها')
 
     def __str__(self):
         return self.title
@@ -26,21 +27,21 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, default=1, verbose_name='نویسنده')
-    title = models.CharField(max_length=50, unique_for_date="publish", verbose_name='عنوان')
-    slug = models.SlugField(null=True, unique=True, blank=True, verbose_name='لینک')
-    category = models.ManyToManyField(Category, related_name='posts', verbose_name='دسته بندی')
-    body = models.TextField(verbose_name='محتوا')
-    image = models.ImageField(verbose_name='عکس', upload_to='images/posts', null=True, blank=True)
-    created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ساخت')
-    updated = models.DateTimeField(auto_now=True, verbose_name='آخرین بروزرسانی')
-    publish = models.DateTimeField(default=timezone.now, verbose_name='زمان انتشار')
-    status = models.BooleanField(default=True, verbose_name='وضعیت')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default=1, verbose_name=_('نویسنده'))
+    title = models.CharField(max_length=50, unique_for_date="publish", verbose_name=_('عنوان'))
+    slug = models.SlugField(null=True, unique=True, blank=True, verbose_name=_('لینک'))
+    category = models.ManyToManyField(Category, related_name='posts', verbose_name=_('دسته بندی'))
+    body = models.TextField(verbose_name=_('محتوا'))
+    image = models.ImageField(verbose_name=_('عکس'), upload_to='images/posts', null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('تاریخ ساخت'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('آخرین بروزرسانی'))
+    publish = models.DateTimeField(default=timezone.now, verbose_name=_('زمان انتشار'))
+    status = models.BooleanField(default=True, verbose_name=_('وضعیت'))
 
 
     class Meta:
-        verbose_name = 'مقاله'
-        verbose_name_plural = 'مقاله ها'
+        verbose_name = _('مقاله')
+        verbose_name_plural = _('مقاله ها')
 
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'slug': self.slug})
@@ -63,16 +64,16 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name='مقاله')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name='کاربر')
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies', verbose_name='پاسخ به')
-    body = models.TextField(verbose_name='عنوان')
-    created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ساخت')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name=_('مقاله'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name=_('کاربر'))
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies', verbose_name=_('پاسخ به'))
+    body = models.TextField(verbose_name=_('عنوان'))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('تاریخ ساخت'))
 
 
     class Meta:
-        verbose_name = 'دیدگاه'
-        verbose_name_plural = 'دیدگاه ها'
+        verbose_name = _('دیدگاه')
+        verbose_name_plural = _('دیدگاه ها')
 
 
     def __str__(self):
@@ -81,30 +82,30 @@ class Comment(models.Model):
 
 
 class Message(models.Model):
-    title = models.CharField(max_length=100, verbose_name='عنوان پیام')
-    text = models.TextField(verbose_name='محتوای پیام')
-    email = models.EmailField(verbose_name='ایمیل')
-    age = models.IntegerField(default=0, verbose_name='سن')
-    created_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name='تاریخ ارسال پیام')
-    date = models.DateTimeField(default=timezone.now(), verbose_name='زمان پیام')
+    title = models.CharField(max_length=100, verbose_name=_('عنوان پیام'))
+    text = models.TextField(verbose_name=_('محتوای پیام'))
+    email = models.EmailField(verbose_name=_('ایمیل'))
+    age = models.IntegerField(default=0, verbose_name=_('سن'))
+    created_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name=_('تاریخ ارسال پیام'))
+    date = models.DateTimeField(default=timezone.now(), verbose_name=_('زمان پیام'))
 
 
     class Meta:
-        verbose_name = 'پیام'
-        verbose_name_plural = 'پیام ها'
+        verbose_name = _('پیام')
+        verbose_name_plural = _('پیام ها')
 
     def __str__(self):
         return self.title
 
 
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes', verbose_name='کاربر')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes', verbose_name='مقاله')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes', verbose_name=_('کاربر'))
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes', verbose_name=_('مقاله'))
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'لایک'
-        verbose_name_plural = 'لایک ها'
+        verbose_name = _('لایک')
+        verbose_name_plural = _('لایک ها')
         ordering = ('-created_at',)
 
     def __str__(self):
