@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_render_partial',
     'django_social_share',
     'widget_tweaks',
+    'mptt',
     # my apps
     'home.apps.HomeConfig',
     'accounts.apps.AccountsConfig',

@@ -7,7 +7,6 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 
-
 class Category(models.Model):
     title = models.CharField(max_length=100, verbose_name=_('عنوان'))
     slug = models.SlugField(unique=True, blank=True, null=True, verbose_name=_('لینک'))

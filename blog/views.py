@@ -82,3 +82,4 @@ def like(request, slug, pk):
         Like.objects.create(post_id=pk, user_id=request.user.id)
 
     return redirect('blog:detail', slug)
+
