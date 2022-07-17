@@ -48,7 +48,7 @@
 												<li><a href="#">{{ object.created }}</a></li>
 												<li><a href="#">10 Comments</a></li>
 											</ul>
-											<p class="text text-black">{{ object.body|linebreaks }}</p>
+											<p class="text text-black">{{ object.body|safe }}</p>
 											<div class="post-options">
 												<div class="row">
 													<div class="col-6">

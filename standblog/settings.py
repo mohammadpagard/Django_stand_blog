@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'django_render_partial',
     'django_social_share',
     'widget_tweaks',
+    'mptt',
+    'sorl.thumbnail',
+    'ckeditor',
     # my apps
     'home.apps.HomeConfig',
     'accounts.apps.AccountsConfig',
@@ -135,6 +138,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = 'media/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "assets")]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# CKEDITOR_UPLOAD_PATH = "uploads/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
