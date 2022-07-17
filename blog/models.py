@@ -5,6 +5,8 @@ from django.urls import reverse
 from django.template.defaultfilters import slugify
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+from mptt.models import MPTTModel, TreeForeignKey
+from ckeditor.fields import RichTextField
 
 
 class Category(models.Model):
@@ -30,7 +32,8 @@ class Post(models.Model):
     title = models.CharField(max_length=50, unique_for_date="publish", verbose_name=_('عنوان'))
     slug = models.SlugField(null=True, unique=True, blank=True, verbose_name=_('لینک'))
     category = models.ManyToManyField(Category, related_name='posts', verbose_name=_('دسته بندی'))
-    body = models.TextField(verbose_name=_('محتوا'))
+    # body = models.TextField(verbose_name=_('محتوا'))
+    body = RichTextField(blank=True, null=True)
     image = models.ImageField(verbose_name=_('عکس'), upload_to='images/posts', null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('تاریخ ساخت'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('آخرین بروزرسانی'))
@@ -63,16 +66,19 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name=_('مقاله'))
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name=_('کاربر'))
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name=_('مقاله'), null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name=_('کاربر'), null=True, blank=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies', verbose_name=_('پاسخ به'))
-    body = models.TextField(verbose_name=_('عنوان'))
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_('تاریخ ساخت'))
+    body = models.TextField(verbose_name=_('عنوان'), null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('تاریخ ساخت'), null=True, blank=True)
 
 
     class Meta:
         verbose_name = _('دیدگاه')
         verbose_name_plural = _('دیدگاه ها')
+
+    # class MPTTMeta:
+    #     order_insertion_by = ['created']
 
 
     def __str__(self):
