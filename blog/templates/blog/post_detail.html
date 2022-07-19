@@ -54,9 +54,9 @@
 													<div class="col-6">
 														<ul class="post-tags">
 															{% if is_liked %}
-																<li><a href="{% url 'blog:like' post.slug post.id %}"><i style="font-size: 30px" class="fa fa-heart"></i></a>{{ post.likes.all.count }}</li>
+																<li><a onclick="like('{{ post.slug }}', '{{ post.id }}')"><i id="like" style="font-size: 30px" class="fa fa-heart"></i></a><span id="count">{{ post.likes.all.count }}</span></li>
 															{% else %}
-																<li><a href="{% url 'blog:like' post.slug post.id %}"><i style="font-size: 30px" class="fa fa-heart-o"></i></a>{{ post.likes.all.count }}</li>
+																<li><a onclick="like('{{ post.slug }}', '{{ post.id }}')"><i id="like" style="font-size: 30px" class="fa fa-heart-o"></i></a><span id="count">{{ post.likes.all.count }}</span></li>
 															{% endif %}
 														</ul>
 													</div>

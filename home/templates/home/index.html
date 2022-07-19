@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load social_share %}
+{% load thumbnail %}
 
 
 {% block title %} Home Page {% endblock %}
@@ -13,11 +14,13 @@
         <div class="owl-banner owl-carousel">
           {% for post in posts %}
             <div class="item">
-              {% if post.image %}
-                <img src="{{ post.image.url }}" alt="">
-              {% else %}
-                <img src="{% static 'images/banner-item-01.jpg' %}" alt=""> 
-              {% endif %} 
+              {% thumbnail post.image "100x100" crop="center" as im %}
+                {% if post.image %}
+                  <img src="{{ post.image.url }}" alt="">
+                {% else %}
+                  <img src="{% static 'images/banner-item-01.jpg' %}" alt=""> 
+                {% endif %}
+              {% endthumbnail %}
               <div class="item-content">
               <div class="main-content">
                   <div class="meta-category">
