@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
 from .models import Post, Category, Comment, Message, Like
 from django.core.paginator import Paginator
 from .forms import MessageForm
@@ -78,8 +79,9 @@ def like(request, slug, pk):
     try:
         like = Like.objects.get(post__slug=slug, user_id=request.user.id)
         like.delete()
+        return JsonResponse({'response': 'unliked'})
     except:
         Like.objects.create(post_id=pk, user_id=request.user.id)
+        return JsonResponse({'response': 'liked'})
 
-    return redirect('blog:detail', slug)
 
