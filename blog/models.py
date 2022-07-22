@@ -32,7 +32,6 @@ class Post(models.Model):
     title = models.CharField(max_length=50, unique_for_date="publish", verbose_name=_('عنوان'))
     slug = models.SlugField(null=True, unique=True, blank=True, verbose_name=_('لینک'))
     category = models.ManyToManyField(Category, related_name='posts', verbose_name=_('دسته بندی'))
-    # body = models.TextField(verbose_name=_('محتوا'))
     body = RichTextField(blank=True, null=True)
     image = models.ImageField(verbose_name=_('عکس'), upload_to='images/posts', null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('تاریخ ساخت'))
@@ -92,7 +91,7 @@ class Message(models.Model):
     email = models.EmailField(verbose_name=_('ایمیل'))
     age = models.IntegerField(default=0, verbose_name=_('سن'))
     created_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name=_('تاریخ ارسال پیام'))
-    date = models.DateTimeField(default=timezone.now(), verbose_name=_('زمان پیام'))
+    date = models.DateTimeField(auto_now=True, verbose_name=_('زمان پیام'))
 
 
     class Meta:
